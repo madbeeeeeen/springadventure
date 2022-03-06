@@ -18,7 +18,7 @@ public class UserRepository {
     // 内建非 Bean 对象 （依赖）
     private BeanFactory beanFactory;
     //
-    ObjectFactory<ApplicationContext> objectFactory;
+    private ObjectFactory<ApplicationContext> objectFactory;
 
     public Collection<User> getUsers() {
         return users;
