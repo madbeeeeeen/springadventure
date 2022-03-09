@@ -35,4 +35,11 @@ public class User {
                 .add("name='" + name + "'")
                 .toString();
     }
+
+    public static User createUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setName("Anno madbeen");
+        return user;
+    }
 }
