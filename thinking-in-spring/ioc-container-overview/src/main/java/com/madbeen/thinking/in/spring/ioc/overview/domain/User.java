@@ -1,5 +1,8 @@
 package com.madbeen.thinking.in.spring.ioc.overview.domain;
 
+import com.madbeen.thinking.in.spring.ioc.overview.enums.City;
+import org.springframework.core.io.Resource;
+
 import java.util.StringJoiner;
 
 /**
@@ -11,6 +14,10 @@ public class User {
     private Long id;
 
     private String name;
+
+    private City city;
+
+    private Resource configFileLocation;
 
     public Long getId() {
         return id;
@@ -28,12 +35,30 @@ public class User {
         this.name = name;
     }
 
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public Resource getConfigFileLocation() {
+        return configFileLocation;
+    }
+
+    public void setConfigFileLocation(Resource configFileLocation) {
+        this.configFileLocation = configFileLocation;
+    }
+
     @Override
     public String toString() {
-        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
-                .add("name='" + name + "'")
-                .toString();
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", city=" + city +
+                ", configFileLocation=" + configFileLocation +
+                '}';
     }
 
     public static User createUser() {
