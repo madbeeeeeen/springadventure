@@ -7,7 +7,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="userHolder" class="com.madbeen.thinking.in.spring.bean.lifecycle.UserHolder" autowire="constructor">
+    <bean id="userHolder" class="com.madbeen.thinking.in.spring.bean.lifecycle.UserHolder" autowire="constructor"
+        init-method="init" destroy-method="doDestroy">
 <!--        <property name="number" value="1" />-->
         <property name="desc" value="The user holder" />
     </bean>

@@ -15,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+        // InstantiationAwareBeanPostProcessor
         if (ObjectUtils.nullSafeEquals("superUser", beanName) && SuperUser.class.equals(beanClass)) {
             // 把配置好的 superUser bean 替换掉
             return new SuperUser();
@@ -25,6 +26,7 @@ class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPos
 
     @Override
     public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+        // InstantiationAwareBeanPostProcessor
         if (ObjectUtils.nullSafeEquals("user", beanName) && User.class.equals(bean.getClass())) {
             // 把配置好的 superUser bean 替换掉
             User user = (User) bean;
@@ -61,7 +63,8 @@ class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPos
                 // PropertyValue value 是不可变的 （final）
 //                    PropertyValue desc = mutablePropertyValues.getPropertyValue("desc");
                 mutablePropertyValues.removePropertyValue("desc");
-                mutablePropertyValues.add("desc", "modified by [postProcessProperties] desc v2: The user holder");
+                System.out.println("modified by [postProcessProperties InstantiationAwareBeanPostProcessor] desc v2: The user holder");
+                mutablePropertyValues.add("desc", "modified by [postProcessProperties InstantiationAwareBeanPostProcessor] desc v2: The user holder");
             }
 
             return mutablePropertyValues;
@@ -72,8 +75,20 @@ class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPos
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (ObjectUtils.nullSafeEquals("userHolder", beanName) && UserHolder.class.equals(bean.getClass())) {
+            System.out.println("modified by [postProcessBeforeInitialization BeanPostProcessor] desc v3: The user holder");
             UserHolder userHolder = (UserHolder) bean;
-            userHolder.setDesc("modified by [postProcessBeforeInitialization] desc v3: The user holder");
+            userHolder.setDesc("modified by [postProcessBeforeInitialization BeanPostProcessor] desc v3: The user holder");
+        }
+
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if (ObjectUtils.nullSafeEquals("userHolder", beanName) && UserHolder.class.equals(bean.getClass())) {
+            System.out.println("modified by [postProcessAfterInitialization BeanPostProcessor] desc v7: The user holder");
+            UserHolder userHolder = (UserHolder) bean;
+            userHolder.setDesc("modified by [postProcessAfterInitialization BeanPostProcessor] desc v7: The user holder");
         }
 
         return bean;

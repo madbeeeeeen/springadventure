@@ -2,18 +2,20 @@ package com.madbeen.thinking.in.spring.bean.lifecycle;
 
 import com.madbeen.thinking.in.spring.ioc.overview.domain.User;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.*;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
+import org.springframework.util.ObjectUtils;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  * @author: madbeen
  * @date: 2022/03/13/3:51 PM
  */
-public class UserHolder implements BeanNameAware, BeanClassLoaderAware, BeanFactoryAware, EnvironmentAware {
+public class UserHolder implements BeanNameAware, BeanClassLoaderAware, BeanFactoryAware,
+        EnvironmentAware, InitializingBean, SmartInitializingSingleton, DisposableBean {
 
     private final User user;
 
@@ -101,5 +103,55 @@ public class UserHolder implements BeanNameAware, BeanClassLoaderAware, BeanFact
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+    }
+
+    /**
+     * 依赖于注解驱动
+     * 当前场景：BeanFactory
+     */
+    @PostConstruct
+    public void initPostConstruct() {
+        System.out.println("modified by [initPostConstruct @PostConstruct] desc v4: The user holder");
+        this.desc = "modified by [initPostConstruct @PostConstruct] desc v4: The user holder";
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("modified by [afterPropertiesSet InitializingBean] desc v5: The user holder");
+        this.desc = "modified by [afterPropertiesSet InitializingBean] desc v5: The user holder";
+    }
+
+
+    public void init() {
+        System.out.println("modified by [init customize] desc v6: The user holder");
+        this.desc = "modified by [init customize] desc v6: The user holder";
+    }
+
+    @Override
+    public void afterSingletonsInstantiated() {
+        System.out.println("modified by [afterSingletonsInstantiated SmartInitializingSingleton] desc v8: The user holder");
+        this.desc = "modified by [afterSingletonsInstantiated SmartInitializingSingleton] desc v8: The user holder";
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        System.out.println("modified by [preDestroy @PreDestroy] desc v10: The user holder");
+        this.setDesc("modified by [preDestroy @PreDestroy] desc v10: The user holder");
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("[destroy DisposableBean]");
+        this.setDesc("[destroy DisposableBean]");
+    }
+
+    public void doDestroy() {
+        System.out.println("[doDestroy customize]");
+        this.setDesc("[doDestroy customize]");
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        System.out.println("The user holder is finalizing");
     }
 }
