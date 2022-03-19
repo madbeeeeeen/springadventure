@@ -18,6 +18,9 @@
         <module>bean-scope</module>
         <module>bean-lifecycle</module>
         <module>configuration-metadata</module>
+        <module>generic</module>
+        <module>event</module>
+        <module>annotation</module>
     </modules>
 
     <properties>
